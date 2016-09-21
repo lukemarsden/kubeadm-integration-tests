@@ -5,7 +5,7 @@ echo Creating VMs
 ./create.sh centos
 
 echo Waiting for them to boot
-sleep 30
+sleep 45
 
 echo Starting tests
 #./test.sh ubuntu
