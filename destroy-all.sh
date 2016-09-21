@@ -1,6 +1,6 @@
 #!/bin/bash
-set -xe
-for DISTRO in ubuntu fedora; do
+set -x
+for DISTRO in ubuntu centos; do
     for X in {1..3}; do yes |tugboat destroy kubeadm-ubuntu-$X; done
-    for X in {1..3}; do yes |tugboat destroy kubeadm-fedora-$X; done
+    for X in {1..3}; do yes |tugboat destroy kubeadm-centos-$X; done
 done
