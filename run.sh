@@ -1,9 +1,15 @@
 #!/bin/bash
 set -xe
-./create.sh ubuntu
-#./create.sh fedora
+echo Creating VMs
+#./create.sh ubuntu
+./create.sh centos
 
-./test.sh ubuntu
-#./test.sh fedora
+echo Waiting for them to boot
+sleep 30
 
+echo Starting tests
+#./test.sh ubuntu
+./test.sh centos
+
+echo Destroying everything
 ./destroy-all.sh

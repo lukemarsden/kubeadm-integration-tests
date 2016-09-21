@@ -5,11 +5,14 @@ DISTRO=${1:-ubuntu}
 if [ "$DISTRO" = "ubuntu" ]; then
     # common stuff
     for X in {1..3}; do
-        tugboat ssh kubeadm-$DISTRO-$X -c "curl -sSL https://get.docker.com/ | sh && \
+        # curl -sSL https://get.docker.com/ | sh && \
+        # ubuntu package variant below v  docker official images variant above ^
+        tugboat ssh kubeadm-$DISTRO-$X -c "apt-get install -y docker.io && \
+            apt-get install -y socat && \
             curl -s -L 'https://www.dropbox.com/s/xxk6wn82319p8bs/debs-ea9013.txz?dl=1' | tar xJv && \
             dpkg -i debian/bin/unstable/xenial/*.deb"
     done
-elif [ "$DISTRO" = "fedora" ]; then
+elif [ "$DISTRO" = "centos" ]; then
     for X in {1..3}; do
         tugboat ssh kubeadm-$DISTRO-$X -c "cat <<EOF > /etc/yum.repos.d/k8s.repo
 [kubelet]
