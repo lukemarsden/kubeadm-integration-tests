@@ -1,10 +1,11 @@
 #!/bin/bash
-set -x
+set -e
 
 for DISTRO in xenial centos7; do
     for DOCKER in distro upstream; do
         log="$DISTRO-$DOCKER-`date +%s`.log"
         echo Creating VMs for combo $DISTRO + $DOCKER docker
+        echo Logging to $log
         ./create.sh $DISTRO $DOCKER >> $log 2>&1
 
         echo Waiting for them to boot
@@ -17,8 +18,7 @@ for DISTRO in xenial centos7; do
             echo $DISTRO $DOCKER FAIL, see $log
         fi
 
-        echo Destroying everything
-        ./destroy-all.sh >> $log 2>&1
-        echo destroy all returned $?
+        echo Attempting to destroy everything
+        ./destroy-all.sh >> $log 2>&1 || true
     done
 done
