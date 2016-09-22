@@ -27,7 +27,6 @@ baseurl=http://files.rm-rf.ca/rpms/kubelet/
 enabled=1
 gpgcheck=0
 EOF
-setenforce 0
 yum install -y kubelet kubeadm kubectl kubernetes-cni
 systemctl enable docker && systemctl start docker
 systemctl enable kubelet && systemctl start kubelet"
