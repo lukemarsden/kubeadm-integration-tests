@@ -59,7 +59,7 @@ tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubeadm init $extra |tee init-output.t
 join_cmd=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "tail -n 1 init-output.txt" |tail -n 1`
 
 # install pod network
-tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl apply -f https://raw.githubusercontent.com/lukemarsden/weave-kube/master/weave-daemonset-latest.yml"
+tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl apply -f https://git.io/weave-kube"
 
 echo "GOT JOIN COMMAND $join_cmd"
 # run the command the master gave us on the nodes
