@@ -18,6 +18,6 @@ for DISTRO in xenial centos7; do
         fi
 
         echo Destroying everything
-        ./destroy-all.sh > $log 2>&1
+        ./destroy-all.sh >> $log 2>&1
     done
 done
