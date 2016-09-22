@@ -11,7 +11,7 @@ scripts that use digitalocean VMs to test `kubeadm` on xenial and centos7:
 
 # dependencies
 
-* parallel (was installed on my OS X machine already)
+* parallel from GNU `moreutils` (was installed on my OS X machine already, or `{apt-get,yum} install moreutils`)
 * [tugboat](https://github.com/pearkes/tugboat)
 * a ~/.tugboat file configured appropriately (tugboat will guide you through most of this when you run it for the first time), mine looks like:
 
