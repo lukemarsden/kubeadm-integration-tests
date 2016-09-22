@@ -29,9 +29,10 @@ systemctl enable kubelet && systemctl start kubelet"
 fi
 
 # install the master
-tugboat ssh kubeadm-$DISTRO-$X -c "kubeadm init"
-
+tugboat ssh kubeadm-$DISTRO-$X -c "kubeadm init |tee init-output.txt"
+join_cmd=`tugboat ssh kubeadm-$DISTRO-$X -c "tail -n 1 init-output.txt"`
+echo "GOT JOIN COMMAND $join_cmd"
 # run the command the master gave us on the nodes
-#for X in {2..3}; do
-#    tugboat ssh kubeadm-$DISTRO-$X -c "$cmd"
-#done
+for X in {2..3}; do
+    tugboat ssh kubeadm-$DISTRO-$X -c "$join_cmd"
+done
