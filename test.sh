@@ -9,7 +9,7 @@ if [ "$DISTRO" = "ubuntu" ]; then
         # ubuntu package variant below v  docker official images variant above ^
         tugboat ssh kubeadm-$DISTRO-$X -c "apt-get install -y docker.io && \
             apt-get install -y socat && \
-            curl -s -L 'https://www.dropbox.com/s/xxk6wn82319p8bs/debs-ea9013.txz?dl=1' | tar xJv && \
+            curl -s -L 'https://www.dropbox.com/s/tso6dc7b94ch2sk/debs-5ab576.txz?dl=1' | tar xJv && \
             dpkg -i debian/bin/unstable/xenial/*.deb"
     done
 elif [ "$DISTRO" = "centos" ]; then
