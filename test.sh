@@ -27,8 +27,8 @@ fi
 parallel -i tugboat ssh kubeadm-$DISTRO-{} -c "$common_setup" -- {1..3}
 
 # install the master
-tugboat ssh kubeadm-$DISTRO-$X -c "kubeadm init |tee init-output.txt"
-join_cmd=`tugboat ssh kubeadm-$DISTRO-$X -c "tail -n 1 init-output.txt" |tail -n 1`
+tugboat ssh kubeadm-$DISTRO-1 -c "kubeadm init |tee init-output.txt"
+join_cmd=`tugboat ssh kubeadm-$DISTRO-1 -c "tail -n 1 init-output.txt" |tail -n 1`
 echo "GOT JOIN COMMAND $join_cmd"
 # run the command the master gave us on the nodes
 for X in {2..3}; do
