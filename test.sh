@@ -43,7 +43,7 @@ systemctl enable kubelet && systemctl start kubelet"
 fi
 
 # common setup
-parallel -i tugboat ssh kubeadm-$DISTRO-$DOCKER-{} -c "$common_setup" -- {1..3}
+parallel -i tugboat ssh kubeadm-$DISTRO-$DOCKER-{} -c "$common_setup" -- $ALLNODES
 
 # install the master
 tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubeadm init |tee init-output.txt"
@@ -54,7 +54,7 @@ tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl apply -f https://raw.githubuse
 
 echo "GOT JOIN COMMAND $join_cmd"
 # run the command the master gave us on the nodes
-for X in {2..3}; do
+for X in $NODES; do
     tugboat ssh kubeadm-$DISTRO-$DOCKER-$X -c "$join_cmd"
 done
 
