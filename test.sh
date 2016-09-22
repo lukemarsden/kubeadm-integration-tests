@@ -34,20 +34,20 @@ systemctl enable kubelet && systemctl start kubelet"
 fi
 
 # common setup
-parallel -i tugboat ssh kubeadm-$DISTRO-{} -c "$common_setup" -- {1..3}
+parallel -i tugboat ssh kubeadm-$DISTRO-$DOCKER-{} -c "$common_setup" -- {1..3}
 
 # install the master
-tugboat ssh kubeadm-$DISTRO-1 -c "kubeadm init |tee init-output.txt"
-join_cmd=`tugboat ssh kubeadm-$DISTRO-1 -c "tail -n 1 init-output.txt" |tail -n 1`
+tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubeadm init |tee init-output.txt"
+join_cmd=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "tail -n 1 init-output.txt" |tail -n 1`
 echo "GOT JOIN COMMAND $join_cmd"
 # run the command the master gave us on the nodes
 for X in {2..3}; do
-    tugboat ssh kubeadm-$DISTRO-$X -c "$join_cmd"
+    tugboat ssh kubeadm-$DISTRO-$DOCKER-$X -c "$join_cmd"
 done
 
 nodes="0"
 while [ $nodes -ne 4 ]; do
-    nodes=`tugboat ssh kubeadm-$DISTRO-1 -c "kubectl get nodes |wc -l"`
+    nodes=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl get nodes |wc -l"`
     echo "Got $nodes nodes"
 done
 
