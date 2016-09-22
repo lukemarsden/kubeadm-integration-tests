@@ -14,7 +14,7 @@ for DISTRO in xenial centos7; do
             ./create.sh $DISTRO $DOCKER $MULTINODE >> $path/$log 2>&1
 
             echo Waiting for them to boot >> $path/$log
-            sleep 60
+            sleep 90
 
             echo Starting tests >> $log
             if ./test.sh $DISTRO $DOCKER $MULTINODE >> $path/$log 2>&1; then
