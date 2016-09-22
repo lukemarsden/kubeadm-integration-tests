@@ -47,7 +47,7 @@ done
 
 nodes="0"
 while [ $nodes -ne 4 ]; do
-    nodes=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl get nodes |wc -l"`
+    nodes=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl get nodes |wc -l" |tail -n 1`
     echo "Got $nodes nodes"
 done
 
