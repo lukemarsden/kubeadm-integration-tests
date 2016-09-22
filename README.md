@@ -3,13 +3,14 @@
 scripts that use digitalocean VMs to test `kubeadm` on xenial and centos7:
 
 * creates 3 VMs
-* installs either the distro's docker package, or the official latest docker from get.docker.com
-* installs latest kubeadm testing packages
-* runs kubeadm init on VM 1
-* captures the output from that and runs it (the kubeadm join command) on the two other nodes
-* waits for `kubectl get nodes` to show 4 lines (3 nodes + header line)
+* installs either the distro's `docker` package, or the official latest docker from get.docker.com
+* installs latest `kubeadm` testing packages
+* runs `kubeadm init` on VM 1
+* captures the output from that and runs it (the `kubeadm join [...]` command) on the two other nodes
+* waits for `kubectl get nodes` to show 4 lines (3 nodes + header line), before declaring success
 
-dependencies:
+# dependencies
+
 * parallel (was installed on my OS X machine already)
 * [tugboat](https://github.com/pearkes/tugboat)
 * a ~/.tugboat file configured appropriately (tugboat will guide you through most of this when you run it for the first time), mine looks like:
@@ -53,3 +54,7 @@ result: PASS
 
 real    15m30.244s
 ```
+
+# tips
+
+* if a test gets stuck, go check the log, and/or use `tugboat ssh` to log into the nodes and poke around
