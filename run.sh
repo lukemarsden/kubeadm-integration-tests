@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -x
 
 for DISTRO in xenial centos7; do
     for DOCKER in distro upstream; do
@@ -12,12 +12,13 @@ for DISTRO in xenial centos7; do
 
         echo Starting tests
         if ./test.sh $DISTRO $DOCKER >> $log 2>&1; then
-            echo $DISTRO $DOCKER PASS
+            echo $DISTRO $DOCKER PASS, see $log
         else
             echo $DISTRO $DOCKER FAIL, see $log
         fi
 
         echo Destroying everything
         ./destroy-all.sh >> $log 2>&1
+        echo destroy all returned $?
     done
 done

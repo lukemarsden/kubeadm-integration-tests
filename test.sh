@@ -5,9 +5,9 @@ DOCKER=${2:-distro} # or upstream
 # Install the master
 if [ "$DISTRO" = "xenial" ]; then
     if [ "$DOCKER" = "distro" ]; then
-        docker_cmd="curl -sSL https://get.docker.com/ | sh"
-    elif [ "$DOCKER" = "upstream" ]; then
         docker_cmd="apt-get install -y docker.io"
+    elif [ "$DOCKER" = "upstream" ]; then
+        docker_cmd="curl -sSL https://get.docker.com/ | sh"
     fi
     common_setup="$docker_cmd && \
             apt-get install -y socat && \
@@ -15,9 +15,9 @@ if [ "$DISTRO" = "xenial" ]; then
             dpkg -i debian/bin/unstable/xenial/*.deb"
 elif [ "$DISTRO" = "centos7" ]; then
     if [ "$DOCKER" = "distro" ]; then
-        docker_cmd="curl -sSL https://get.docker.com/ | sh"
-    elif [ "$DOCKER" = "upstream" ]; then
         docker_cmd="yum install -y docker"
+    elif [ "$DOCKER" = "upstream" ]; then
+        docker_cmd="curl -sSL https://get.docker.com/ | sh"
     fi
     common_setup="$docker_cmd
 cat <<EOF > /etc/yum.repos.d/k8s.repo
