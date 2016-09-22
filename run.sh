@@ -4,7 +4,7 @@ set -e
 for DISTRO in xenial centos7; do
     for DOCKER in distro upstream; do
         log="$DISTRO-$DOCKER-`date +%s`.log"
-        echo "--> distro: $DISTRO, docker: $DOCKER docker, log: $log"
+        echo "--> distro: $DISTRO, docker: $DOCKER, log: $log"
         ./create.sh $DISTRO $DOCKER >> $log 2>&1
 
         echo Waiting for them to boot >> $log
