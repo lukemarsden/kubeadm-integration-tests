@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 path=${1:-"/var/www/html"}
-echo "<html><head><title>kubeadm cowboy CI</title><script>setTimeout(function(){window.location.reload(1);}, 5000);</script></head><body><h1>last started: `date`</h1>" > $path/index-new.html
+echo "<html><head><title>kubeadm cowboy CI</title><script>setTimeout(function(){window.location.reload(1);}, 5000);</script></head><body><h1>last started: `date`</h1>" > $path/ci-new.html
 
 for DISTRO in xenial centos7; do
     for DOCKER in distro upstream; do
@@ -15,10 +15,10 @@ for DISTRO in xenial centos7; do
         echo Starting tests >> $log
         if ./test.sh $DISTRO $DOCKER >> $path/$log 2>&1; then
             echo result: PASS |tee -a $path/all-runs.txt
-            echo "<div style='width:48%; height: 40%; background-color:green; font-size:64px; float:left; margin:0.8%;'>PASS distro: $DISTRO, docker: $DOCKER <a href='$log' style='font-size:normal;'>log</a></div>" >> $path/index-new.html
+            echo "<div style='width:48%; height: 40%; background-color:green; font-size:64px; float:left; margin:0.8%;'>PASS distro: $DISTRO, docker: $DOCKER <a href='$log' style='font-size:normal;'>log</a></div>" >> $path/ci-new.html
         else
             echo result: FAIL |tee -a $path/all-runs.txt
-            echo "<div style='width:48%; height: 40%; background-color:red; font-size:64px; float:left; margin:0.8%;'>FAIL distro: $DISTRO, docker: $DOCKER <a href='$log' style='font-size:normal;'>log</a></div>" >> $path/index-new.html
+            echo "<div style='width:48%; height: 40%; background-color:red; font-size:64px; float:left; margin:0.8%;'>FAIL distro: $DISTRO, docker: $DOCKER <a href='$log' style='font-size:normal;'>log</a></div>" >> $path/ci-new.html
         fi
 
         docker_version=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "docker version" |grep Version |head -n 1`
@@ -29,5 +29,5 @@ for DISTRO in xenial centos7; do
     done
 done
 
-echo "<a href='https://github.com/lukemarsden/kubeadm-integration-tests'>repo</a></body></html>" >> $path/index-new.html
-mv $path/index-new.html $path/index.html
+echo "<a href='https://github.com/lukemarsden/kubeadm-integration-tests'>repo</a></body></html>" >> $path/ci-new.html
+mv $path/ci-new.html $path/ci.html
