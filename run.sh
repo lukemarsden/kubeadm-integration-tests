@@ -13,7 +13,7 @@ for DISTRO in xenial centos7; do
         ./create.sh $DISTRO $DOCKER >> $path/$log 2>&1
 
         echo Waiting for them to boot >> $path/$log
-        sleep 45
+        sleep 90
 
         echo Starting tests >> $log
         if ./test.sh $DISTRO $DOCKER >> $path/$log 2>&1; then
