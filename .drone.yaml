@@ -1,0 +1,4 @@
+build:
+  image: gcr.io/kubeadm/tugboat
+  commands:
+    - tugboat --help
