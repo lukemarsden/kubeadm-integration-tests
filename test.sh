@@ -69,10 +69,9 @@ while [ $nodes -lt $EXP_NODES_PLUS_HEADER ]; do
 done
 
 running_pods="0"
-# XXX maybe this '8' should be something else in MULTINODE mode
 while [ $running_pods -lt $EXP_RUNNING_PODS ]; do
     running_pods=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl get po --all-namespaces |grep Running |wc -l" |tail -n 1`
-    echo "Got $nodes pods"
+    echo "Got $running_pods pods"
 done
 
 echo "Success!"
