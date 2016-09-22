@@ -7,9 +7,13 @@ MULTINODE=${3:-"0"} # multinode, 0 = off, 1 = on
 if [ $MULTINODE -eq 1 ]; then
     ALLNODES="1 2 3"
     NODES="2 3"
+    EXP_NODES_PLUS_HEADER=4
+    EXP_RUNNING_PODS=12
 else
     ALLNODES="1"
     NODES=""
+    EXP_NODES_PLUS_HEADER=2
+    EXP_RUNNING_PODS=8
 fi
 
 # Install the master
@@ -59,14 +63,14 @@ for X in $NODES; do
 done
 
 nodes="0"
-while [ $nodes -ne 4 ]; do
+while [ $nodes -lt $EXP_NODES_PLUS_HEADER ]; do
     nodes=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl get nodes |wc -l" |tail -n 1`
     echo "Got $nodes nodes"
 done
 
 running_pods="0"
 # XXX maybe this '8' should be something else in MULTINODE mode
-while [ $nodes -ne 8 ]; do
+while [ $running_pods -lt $EXP_RUNNING_PODS ]; do
     running_pods=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl get po --all-namespaces |grep Running |wc -l" |tail -n 1`
     echo "Got $nodes pods"
 done
