@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-./destroy-all.sh >> $path/$log 2>&1 || true
+./destroy-all.sh >/dev/null 2>&1 || true
 
 path=${1:-"/var/www/html"}
 echo "<html><head><title>kubeadm cowboy CI</title><script>setTimeout(function(){window.location.reload(1);}, 5000);</script></head><body><h1>last started: `date`</h1>" > $path/ci-new.html
