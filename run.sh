@@ -25,7 +25,7 @@ for DISTRO in xenial centos7; do
                 echo "<div style='width:48%; height: 20%; background-color:red; font-size:48px; float:left; margin:0.8%;'>FAIL distro: $DISTRO, docker: $DOCKER, multinode: $MULTINODE <a href='$log' style='font-size:normal;'>log</a></div>" >> $path/ci-new.html
             fi
 
-            docker_version=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "docker version" |grep Version |head -n 1`
+            docker_version=`tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "docker version" |grep Version |head -n 1`
             echo "Docker $docker_version" |tee -a $path/all-runs.txt
 
             echo Attempting to destroy everything >> $path/$log

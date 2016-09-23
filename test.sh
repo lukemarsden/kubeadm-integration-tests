@@ -47,7 +47,7 @@ systemctl enable kubelet && systemctl start kubelet"
 fi
 
 # common setup
-parallel -i tugboat ssh kubeadm-$DISTRO-$DOCKER-{} -c "$common_setup" -- $ALLNODES
+parallel -i tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-{} -c "$common_setup" -- $ALLNODES
 
 # install the master
 if [ $MULTINODE -eq 0 ]; then
@@ -55,27 +55,27 @@ if [ $MULTINODE -eq 0 ]; then
 else
     extra=""
 fi
-tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubeadm init $extra |tee init-output.txt"
-join_cmd=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "tail -n 1 init-output.txt" |tail -n 1`
+tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "kubeadm init $extra |tee init-output.txt"
+join_cmd=`tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "tail -n 1 init-output.txt" |tail -n 1`
 
 # install pod network
-tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl apply -f https://git.io/weave-kube"
+tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "kubectl apply -f https://git.io/weave-kube"
 
 echo "GOT JOIN COMMAND $join_cmd"
 # run the command the master gave us on the nodes
 for X in $NODES; do
-    tugboat ssh kubeadm-$DISTRO-$DOCKER-$X -c "$join_cmd"
+    tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-$X -c "$join_cmd"
 done
 
 nodes="0"
 while [ $nodes -lt $EXP_NODES_PLUS_HEADER ]; do
-    nodes=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl get nodes |wc -l" |tail -n 1`
+    nodes=`tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "kubectl get nodes |wc -l" |tail -n 1`
     echo "Got $nodes nodes"
 done
 
 running_pods="0"
 while [ $running_pods -lt $EXP_RUNNING_PODS ]; do
-    running_pods=`tugboat ssh kubeadm-$DISTRO-$DOCKER-1 -c "kubectl get po --all-namespaces |grep Running |wc -l" |tail -n 1`
+    running_pods=`tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "kubectl get po --all-namespaces |grep Running |wc -l" |tail -n 1`
     echo "Got $running_pods pods"
 done
 

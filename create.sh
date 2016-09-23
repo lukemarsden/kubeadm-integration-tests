@@ -20,5 +20,5 @@ for X in $ALLNODES; do
     elif [ "$DISTRO" = "centos7" ]; then
         img="centos-7-x64"
     fi
-    tugboat create -s 2gb -i $img -r lon1 kubeadm-$DISTRO-$DOCKER-$X
+    tugboat create -s 2gb -i $img -r lon1 kubeadm-$DISTRO-$DOCKER-$MULTINODE-$X
 done
