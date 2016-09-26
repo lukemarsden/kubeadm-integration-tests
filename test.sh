@@ -54,7 +54,7 @@ tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "kubeadm init --use-kubernet
 join_cmd=`tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "tail -n 1 init-output.txt" |tail -n 1`
 
 if [ $MULTINODE -eq 0 ]; then
-    tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "kubectl taint master-node dedicated-"
+    tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "kubectl taint nodes --all dedicated-"
 fi
 
 # install pod network
