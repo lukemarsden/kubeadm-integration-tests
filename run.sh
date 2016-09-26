@@ -19,10 +19,10 @@ for DISTRO in xenial centos7; do
             echo Starting tests >> $log
             if ./test.sh $DISTRO $DOCKER $MULTINODE >> $path/$log 2>&1; then
                 echo result: PASS |tee -a $path/all-runs.txt
-                echo "<div style='width:48%; height: 20%; background-color:green; font-size:48px; float:left; margin:0.8%;'>PASS distro: $DISTRO, docker: $DOCKER, multinode: $MULTINODE <a href='$log' style='font-size:normal;'>log</a></div>" >> $path/ci-new.html
+                echo "<div style='width:48%; height: 20%; background-color:green; font-size:32px; float:left; margin:0.8%;'>PASS distro: $DISTRO, docker: $DOCKER, multinode: $MULTINODE <a href='$log' style='font-size:normal;'>log</a></div>" >> $path/ci-new.html
             else
                 echo result: FAIL |tee -a $path/all-runs.txt
-                echo "<div style='width:48%; height: 20%; background-color:red; font-size:48px; float:left; margin:0.8%;'>FAIL distro: $DISTRO, docker: $DOCKER, multinode: $MULTINODE <a href='$log' style='font-size:normal;'>log</a></div>" >> $path/ci-new.html
+                echo "<div style='width:48%; height: 20%; background-color:red; font-size:32px; float:left; margin:0.8%;'>FAIL distro: $DISTRO, docker: $DOCKER, multinode: $MULTINODE <a href='$log' style='font-size:normal;'>log</a></div>" >> $path/ci-new.html
             fi
 
             docker_version=`tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "docker version" |grep Version |head -n 1`

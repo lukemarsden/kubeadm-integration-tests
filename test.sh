@@ -25,8 +25,8 @@ if [ "$DISTRO" = "xenial" ]; then
     fi
     common_setup="$docker_cmd && \
             apt-get install -y socat && \
-            curl -s -L 'https://www.dropbox.com/s/tso6dc7b94ch2sk/debs-5ab576.txz?dl=1' | tar xJv && \
-            dpkg -i debian/bin/unstable/xenial/*.deb"
+            curl -s -L https://storage.googleapis.com/kubeadm/kubernetes-xenial-preview-bundle.txz | tar xJv && \
+            dpkg -i kubernetes-xenial-preview-bundle/*.deb"
 elif [ "$DISTRO" = "centos7" ]; then
     if [ "$DOCKER" = "distro" ]; then
         docker_cmd="yum install -y docker"
@@ -50,13 +50,12 @@ fi
 parallel -i tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-{} -c "$common_setup" -- $ALLNODES
 
 # install the master
-if [ $MULTINODE -eq 0 ]; then
-    extra="--schedule-workload"
-else
-    extra=""
-fi
-tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "kubeadm init $extra |tee init-output.txt"
+tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "kubeadm init |tee init-output.txt"
 join_cmd=`tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "tail -n 1 init-output.txt" |tail -n 1`
+
+if [ $MULTINODE -eq 0 ]; then
+    tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "kubectl taint master-node -dedicated"
+fi
 
 # install pod network
 tugboat ssh kubeadm-$DISTRO-$DOCKER-$MULTINODE-1 -c "kubectl apply -f https://git.io/weave-kube"
