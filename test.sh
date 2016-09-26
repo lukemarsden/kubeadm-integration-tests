@@ -26,7 +26,7 @@ if [ "$DISTRO" = "xenial" ]; then
     common_setup="$docker_cmd && \
             apt-get install -y socat && \
             curl -s -L https://storage.googleapis.com/kubeadm/kubernetes-xenial-preview-bundle.txz | tar xJv && \
-            dpkg -i --force-all kubernetes-xenial-preview-bundle/*.deb"
+            dpkg -i kubernetes-xenial-preview-bundle/*.deb"
 elif [ "$DISTRO" = "centos7" ]; then
     if [ "$DOCKER" = "distro" ]; then
         docker_cmd="yum install -y docker"
