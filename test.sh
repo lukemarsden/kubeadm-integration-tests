@@ -29,7 +29,7 @@ cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
 deb http://apt.kubernetes.io/ kubernetes-xenial-unstable main
 EOF
 apt-get update
-apt-get install kubelet kubeadm kubectl kubernetes-cni"
+apt-get install -y kubelet kubeadm kubectl kubernetes-cni"
 elif [ "$DISTRO" = "centos7" ]; then
     if [ "$DOCKER" = "distro" ]; then
         docker_cmd="yum install -y docker"
