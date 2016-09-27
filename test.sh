@@ -26,7 +26,7 @@ if [ "$DISTRO" = "xenial" ]; then
     common_setup="$docker_cmd
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
-deb http://apt.kubernetes.io/ kubernetes-xenial-unstable main
+deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 apt-get update
 apt-get install -y kubelet kubeadm kubectl kubernetes-cni"
@@ -40,7 +40,7 @@ elif [ "$DISTRO" = "centos7" ]; then
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=http://yum.kubernetes.io/repos/kubernetes-el7-x86_64-unstable
+baseurl=http://yum.kubernetes.io/repos/kubernetes-el7-x86_64
 enabled=1
 gpgcheck=1
 repo_gpgcheck=1
