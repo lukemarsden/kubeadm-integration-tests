@@ -23,10 +23,13 @@ if [ "$DISTRO" = "xenial" ]; then
     elif [ "$DOCKER" = "upstream" ]; then
         docker_cmd="curl -sSL https://get.docker.com/ | sh"
     fi
-    common_setup="$docker_cmd && \
-            apt-get install -y socat && \
-            curl -s -L https://storage.googleapis.com/kubeadm/kubernetes-xenial-preview-bundle.txz | tar xJv && \
-            dpkg -i kubernetes-xenial-preview-bundle/*.deb"
+    common_setup="$docker_cmd
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+apt-get update
+apt-get install -y kubelet kubeadm kubectl kubernetes-cni"
 elif [ "$DISTRO" = "centos7" ]; then
     if [ "$DOCKER" = "distro" ]; then
         docker_cmd="yum install -y docker"
@@ -34,13 +37,17 @@ elif [ "$DISTRO" = "centos7" ]; then
         docker_cmd="curl -sSL https://get.docker.com/ | sh"
     fi
     common_setup="$docker_cmd
-cat <<EOF > /etc/yum.repos.d/k8s.repo
-[kubelet]
-name=kubelet
-baseurl=http://files.rm-rf.ca/rpms/kubelet/
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=http://yum.kubernetes.io/repos/kubernetes-el7-x86_64
 enabled=1
-gpgcheck=0
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+       https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOF
+setenforce 0
 yum install -y kubelet kubeadm kubectl kubernetes-cni
 systemctl enable docker && systemctl start docker
 systemctl enable kubelet && systemctl start kubelet"

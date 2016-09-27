@@ -6,9 +6,9 @@ set -e
 path=${1:-"/var/www/html"}
 echo "<html><head><title>kubeadm cowboy CI</title><script>setTimeout(function(){window.location.reload(1);}, 5000);</script></head><body><h1>last started: `date`</h1>" > $path/ci-new.html
 
-for DISTRO in centos7 xenial; do
-    for DOCKER in distro upstream; do
-        for MULTINODE in 0 1; do
+for DOCKER in distro upstream; do
+    for MULTINODE in 0 1; do
+        for DISTRO in xenial centos7; do
             log="$DISTRO-$DOCKER-$MULTINODE-`date +%s`.log"
             echo "--> distro: $DISTRO, docker: $DOCKER, multinode: $MULTINODE, log: $log" |tee -a $path/all-runs.txt
             ./create.sh $DISTRO $DOCKER $MULTINODE >> $path/$log 2>&1
