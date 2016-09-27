@@ -39,10 +39,13 @@ elif [ "$DISTRO" = "centos7" ]; then
     common_setup="$docker_cmd
 cat <<EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
-name=kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64-unstable
+name=Kubernetes
+baseurl=http://yum.kubernetes.io/repos/kubernetes-el7-x86_64-unstable
 enabled=1
 gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+       https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 EOF
 yum install -y kubelet kubeadm kubectl kubernetes-cni
 systemctl enable docker && systemctl start docker
